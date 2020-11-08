@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useContext } from 'react';
 import { UserContext } from '../../App';
 import { useHistory, useLocation } from 'react-router-dom';
-import { initializeLoginFramework, handleGoogleSingIn, handleFbSignIn, handleSingOut, createUserWithEmailAndPassword, signInWithEmailAndPassword } from './loginManager';
+import { initializeLoginFramework, handleGoogleSingIn, handleFbSignIn, handleSingOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, resetPassword } from './loginManager';
 
 
 function Login() {
@@ -51,9 +51,6 @@ function Login() {
             })
     }
 
-
-
-
     const handleBlur = (e) => {
         let isFieldValid = true;
         if (e.target.name === 'email') {
@@ -97,10 +94,10 @@ function Login() {
         <div style={{ textAlign: 'center' }}>
             {
                 user.isSignIn ? <button onClick={signOut}>Sign out</button> :
-                    <button onClick={googleSingIn}>Sign in</button>
+                    <button onClick={googleSingIn}>Sign in with Google</button>
             }
-            <br />
-            <button onClick={fbSignIn}>Sign in using Facebook</button>
+            <br /> <br />
+            <button onClick={fbSignIn}>Sign in with Facebook</button>
             {
                 user.isSignIn &&
                 <div>
@@ -109,7 +106,6 @@ function Login() {
                     <img src={user.photo} alt="" />
                 </div>
             }
-
             <h1>Our Own Authentication</h1>
             <input type="checkbox" onChange={() => setNewUser(!newUser)} name="newUser" id="" />
             <label htmlFor="newUser">New User Sign up</label>
@@ -119,6 +115,7 @@ function Login() {
                 <input type="password" onBlur={handleBlur} name="password" id="" placeholder="Password" required /><br /><br />
                 <input type="submit" value={newUser ? "Sign Up" : "Login"} />
             </form>
+            <button onclick{() => resetPassword(user.email)}>Reset Password</button>
             <p style={{ color: 'red' }}>{user.error}</p>
             {user.success && <p style={{ color: 'green' }}>{newUser ? 'Create' : 'Login'} Successfully</p>}
         </div >
